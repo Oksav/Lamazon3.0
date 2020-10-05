@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+    // bool za proverka ima tuka isAdmin
+}
+
+<h2>Products</h2>
+
+    <div class="products">
+    @foreach (var product in Model)
+    {
+        <div class="thumbnail">
+            <img class="product-image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" />
+            
+                
+                <h3>@product.Name</h3>
+                <h3>@product.Price $</h3>
+                <h4>@product.Description</h4>
+                <button>Add To Cart</button>
+                
+                @*@if (!IsAdmin)
+                {
+                    <a class="btn btn-primary" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@product.Id">Add to cart</a>
+                }*@
+            
+        </div>
+    }
+</div>
+
+<style>
+    
+    .thumbnail {
+        display: flex;
+        flex-direction: column;
+        flex: 3;
+        align-items: center;
+    }
+
+    .caption{
+        display: flex;
+        flex-direction: column;
+        flex:3;
+        text-align: center;
+    }
+
+    img {
+        margin: 30px;
+        display: flex;
+        flex: 4;
+    }
+
+    
+
+    button {
+        display: flex;
+        margin: 2px;
+        padding: 10px;
+    }
+</style>
+
