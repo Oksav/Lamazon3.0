@@ -100,7 +100,5 @@ namespace Services
         {
             return _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
         }
-
-        
     }
 }

@@ -35,14 +35,14 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IActionResult AddProduct()
+        public IActionResult AddProduct() //works
         {
             return View();
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public IActionResult AddProduct(ProductViewModel model)
+        public IActionResult AddProduct(ProductViewModel model) //works
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Authorize(Roles ="admin")]
-        public IActionResult DeleteProduct()
+        public IActionResult DeleteProduct() 
         {
             IEnumerable<ProductViewModel> products = _productService.GetAllProducts();
             ViewBag.Products = products;
@@ -64,11 +64,26 @@ namespace WebApplication.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "admin")]        
-        public IActionResult DeleteProduct(int id)
+        [Authorize(Roles = "admin")]
+        public IActionResult DeleteProduct(int id)   //does not work
         {
             _productService.RemoveProduct(id);
             return RedirectToAction("Delete Product", "Products");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateProduct(int id)
+        {
+            ProductViewModel product = _productService.GetProductById(id);
+            ViewBag.Product = product;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProduct(ProductViewModel model)
+        {
+            _productService.UpdateProduct(model);
+            return RedirectToAction("ListProducts", "Products");
         }
 
 

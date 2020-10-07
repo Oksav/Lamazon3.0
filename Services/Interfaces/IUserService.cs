@@ -14,6 +14,7 @@ namespace Services.Interfaces
         Task LogOut();
         UserViewModel GetByUsername(string username);
         IEnumerable<UserViewModel> GetAllUsers();
-        
+
+
     }
 }

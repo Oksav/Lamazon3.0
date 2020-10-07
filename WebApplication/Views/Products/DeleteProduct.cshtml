@@ -6,44 +6,44 @@
 
 <h1>Delete Product</h1>
 
-    <div class="allProducts">
+<div class="allProducts">
 
-        <div class="mt-3">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
+    <div class="mt-3">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Product</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in @ViewBag.Products)
+                    {
                         <tr>
-                            <th>Id</th>
-                            <th>Product</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Price</th>
+                            <td>@product.Id</td>
+                            <td>@product.Name</td>
+                            <td>@product.Description</td>
+                            <td>@product.Category</td>
+                            <td>@product.Price $</td>
+                            <td><input type="button" class="btn btn-primary" onclick="/Products/DeleteProduct/@product.Id" value="Delete Product" /></td>
+                            @* trebe da se izmisle nacin kak na button click da pustime parametar int ID za da znae koj item da go izbrise t.e. remove item da mu naprave *@
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var product in @ViewBag.Products)
-                        {
-                            <tr>
-                                <td>@product.Id</td>
-                                <td>@product.Name</td>
-                                <td>@product.Description</td>
-                                <td>@product.Category</td>
-                                <td>@product.Price $</td>
-                                @*<td><a asp-controller="Products" asp-action="DeleteProduct" asp-route="@product.Id"><input type="button" class="btn btn-primary" value="Delete Product" /></a></td>*@
-                                  @* trebe da se izmisle nacin kak na button click da pustime parametar int ID za da znae koj item da go izbrise t.e. remove item da mu naprave *@
-                            </tr>
-                        }
+                    }
 
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-
-
-
-
-
-
     </div>
+
+
+
+
+
+
+</div>
 
 

@@ -30,7 +30,11 @@ namespace Services
             _mapper = mapper;
         }
 
-        
+        public void CreateOrder(OrderViewModel model)
+        {
+            _orderRepository.Insert(_mapper.Map<Order>(model));
+        }
+
 
         public IEnumerable<OrderViewModel> GetAllOrders()
         {
@@ -58,10 +62,12 @@ namespace Services
             return _mapper.Map<OrderViewModel>(order);
         }
 
+
         public IEnumerable<OrderViewModel> GetUserOrders(string userId)
         {
             return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll().Where(u => u.UserId == userId));
         }
+
 
         public void ChangeStatus(int orderId, StatusTypeViewModel status)
         {
@@ -90,9 +96,6 @@ namespace Services
         }
 
         
-        public void CreateOrder(OrderViewModel model)
-        {
-            _orderRepository.Insert(_mapper.Map<Order>(model));
-        }
+       
     }
 }

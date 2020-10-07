@@ -8,11 +8,12 @@ namespace DataAccess
     {
         
         //check if authetincation and [authorize] attribute work  - checked if remains to hide the action if the userRole is not admin  === finished
-        // add buttons to products(add to cart, view product(for more detailed info)) -- add to cart added, view more details we will see.
+        // ADD TO CART BUTTON HAVE TO MAKE IT WORK TO CHECK IF THE LIST WITH MY ORDERS WORKS.
+        //THE MAPPER SETS DATETIME NOW ON EVERY ORDER SO WE NEED TO FIX THAT
         // check if the cart is working correctly
         // partial view for implementing invoice
         // admin to check on the users with full info
-
+        //update product ne e iskoristeno trebe da se implementire == finished
 
 
 
@@ -23,10 +24,11 @@ namespace DataAccess
         // how will it go down: 
         
         /* 1. user add's items in the cart that he wants to buy and places the order. 
-         * 2. after placing the order contacts the database to check if there is still quanity of the ordered products. If everything is in there redirects him to payment details, else 
+         * 2. after finishing the order(user goes to payment), the app contacts the database to check if there is still quanity of the ordered products.
+         * If everything is in there redirects him to payment details, else 
          * sends notification to the user of the items that do not exist and ask him if he wants to continue to the payment(if cart is not empty and there is still a product) or 
          * to the shopping list once again.
-         a
+         
 
 
 

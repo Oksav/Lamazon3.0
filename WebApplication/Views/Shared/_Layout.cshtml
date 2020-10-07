@@ -35,13 +35,24 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Products" asp-action="ListProducts">Products</a></li>
+                    
+
                 </ul>
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a asp-controller="Accounts" asp-action="LogOut">Logout @User.Identity.Name</a></li>
-                    </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                @if (User.IsInRole("customer"))
+                {
+                    <li><a asp-area="" asp-controller="Orders" asp-action="UserOrders">My Orders</a></li>
+                }
+                else if (User.IsInRole("admin"))
+                {
+                    <li><a asp-area="" asp-controller="Orders" asp-action="ListAllOrders">Orders</a></li>
+                }
+                <li><a asp-controller="Accounts" asp-action="LogOut">Logout @User.Identity.Name</a></li>
+            </ul>
                 }
                 else
                 {
