@@ -72,7 +72,7 @@ namespace Services
                 loginViewModel.Username,
                 loginViewModel.Password,
                 false,
-                false).Result; // returns true but doesnt sign in the user, 
+                false).Result; 
 
                 if (!signInResult.Succeeded)
                     new IdentityError();  // Ne go dave koga ke promasis user i password

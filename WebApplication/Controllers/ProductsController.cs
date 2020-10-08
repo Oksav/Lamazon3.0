@@ -13,17 +13,9 @@ namespace WebApplication.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
-      //  private readonly IOrderService _orderService;
-        private readonly IUserService _userService;
-
-        public ProductsController(
-            IProductService productService,
-           // IOrderService orderService,
-            IUserService userService)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
-           // _orderService = orderService;
-           // _userService = userService;
         }
 
 
@@ -55,7 +47,7 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Authorize(Roles ="admin")]
-        public IActionResult DeleteProduct() 
+        public IActionResult ModifyProduct() 
         {
             IEnumerable<ProductViewModel> products = _productService.GetAllProducts();
             ViewBag.Products = products;
@@ -63,12 +55,11 @@ namespace WebApplication.Controllers
         }
 
 
-        [HttpPost]
         [Authorize(Roles = "admin")]
-        public IActionResult DeleteProduct(int id)   //does not work
+        public IActionResult DeleteProduct(int id)   
         {
             _productService.RemoveProduct(id);
-            return RedirectToAction("Delete Product", "Products");
+            return RedirectToAction("ModifyProduct", "Products");
         }
 
         [HttpGet]
@@ -83,7 +74,7 @@ namespace WebApplication.Controllers
         public IActionResult UpdateProduct(ProductViewModel model)
         {
             _productService.UpdateProduct(model);
-            return RedirectToAction("ListProducts", "Products");
+            return RedirectToAction("ModifyProduct", "Products");
         }
 
 

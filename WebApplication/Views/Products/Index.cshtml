@@ -10,7 +10,7 @@
     @if (User.IsInRole("admin"))
     {
         <a asp-controller="Products" asp-action="AddProduct"><input type="button" class="btn btn-primary" value="++Add Product" /></a>
-        <a asp-controller="Products" asp-action="DeleteProduct"><input type="button" class="btn btn-primary" value="Delete Product" /></a>
+        <a asp-controller="Products" asp-action="ModifyProduct"><input type="button" class="btn btn-primary" value="Modify Products List" /></a>
         
     }
 </div>
@@ -27,10 +27,7 @@
         <h3>Category: @product.Category</h3>
         <h4>@product.Description</h4>
         <button>Add To Cart</button>
-        @if (User.IsInRole("admin"))
-        {
-            <a asp-controller="Products" asp-action="UpdateProduct" asp-route-id=@product.Id><input type="button" class="btn btn-primary" value="Update Product" /></a>
-        }
+       
 
         @*@if (!IsAdmin)
         {
