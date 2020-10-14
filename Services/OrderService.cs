@@ -18,16 +18,19 @@ namespace Services
         private readonly IRepository<OrderProduct> _orderProductRepository;
         private readonly IUserRepository<User> _userRepository;
         private readonly IMapper _mapper;
+        private readonly IRepository<Product> _productRepository;
 
         public OrderService(IRepository<Order> orderRepo,
             IRepository<OrderProduct> orderProductRepo,
             IUserRepository<User> userRepo,
-            IMapper mapper)
+            IMapper mapper,
+            IRepository<Product> productRepository)
         {
             _orderRepository = orderRepo;
             _orderProductRepository = orderProductRepo;
             _userRepository = userRepo;
             _mapper = mapper;
+            _productRepository = productRepository;
         }
 
         public void CreateOrder(OrderViewModel model)
@@ -36,24 +39,33 @@ namespace Services
         }
 
 
+
+
         public IEnumerable<OrderViewModel> GetAllOrders()
         {
             return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll());
         }
 
-        public OrderViewModel GetCurrentOrder(string userId)
+
+
+
+        public OrderViewModel GetCurrentOrder(string userId) 
         {
-            Order order = _orderRepository.GetAll().FirstOrDefault(x => x.UserId == userId);
-            if(order == null || order.Status != StatusType.Init)
+            Order order = _orderRepository.GetAll().FirstOrDefault(x => x.UserId == userId); // get all gi zime site od baza i gi filtrire. moze da se razmislis za nov metod so koristejne na find ako veke go ime da ne prave povik do databaza
+            
+            if(order == null || order.Status != StatusType.Init)                               // isto vaze za sekade deka sho go imis iskoristeno getall() ili da vrne poveke elementi pa pa filtriris
             {
-                CreateOrder(new OrderViewModel { User = new UserViewModel { Id = userId } });
+                CreateOrder(new OrderViewModel { User = new UserViewModel { Id = userId }, Status = StatusTypeViewModel.Init });
                 return GetCurrentOrder(userId);
             }
 
             return _mapper.Map<OrderViewModel>(order);
         }
 
-        public OrderViewModel GetOrderById(int id)
+
+
+
+        public OrderViewModel GetOrderById(int id)  // koa ke imme lista od poveke ordere
         {
             Order order = _orderRepository.GetById(id);
             if (order == null)
@@ -63,10 +75,16 @@ namespace Services
         }
 
 
-        public IEnumerable<OrderViewModel> GetUserOrders(string userId)
+
+
+
+        public IEnumerable<OrderViewModel> GetUserOrders(string userId) // userot da si gi provere odrerto
         {
             return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll().Where(u => u.UserId == userId));
         }
+
+
+
 
 
         public void ChangeStatus(int orderId, StatusTypeViewModel status)
@@ -79,16 +97,32 @@ namespace Services
                 });
         }
 
-        public void AddProduct(int orderId, int productId)
+
+
+
+
+        public void AddProduct(int orderId, int productId, string userId)
         {
-           _orderProductRepository.Insert(
-                new OrderProduct
+
+            Product product = _productRepository.GetById(productId);
+            Order order = _orderRepository.GetById(orderId);
+            User user = _userRepository.GetById(userId);
+
+            order.OrderProducts.Add(
+                new OrderProduct()
                 {
-                    OrderId = orderId,
-                    ProductId = productId
-                }
-                );
+                    Product = product,
+                    Order = order
+                });
+            order.User = user;
+            _orderRepository.Update(order);
+
+
         }
+
+
+        
+
 
         public void RemoveProduct(int orderId, int productId)
         {

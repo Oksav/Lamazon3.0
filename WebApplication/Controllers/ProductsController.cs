@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         }
 
 
-        [Authorize]
+       
         public IActionResult ListProducts()
         {
             return View("Index",_productService.GetAllProducts());

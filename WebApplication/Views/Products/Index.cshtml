@@ -21,19 +21,13 @@
     <div class="thumbnail">
         <img class="product-image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" />
 
-
+        <h3>@product.Id</h3>
         <h3>@product.Name</h3>
         <h3>@product.Price $</h3>
         <h3>Category: @product.Category</h3>
         <h4>@product.Description</h4>
-        <button>Add To Cart</button>
-       
-
-        @*@if (!IsAdmin)
-        {
-            <a class="btn btn-primary" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@product.Id">Add to cart</a>
-        }*@
-
+        <a asp-controller="Orders" asp-action="AddToCart" asp-route-id=@product.Id><input type="button" class="btn btn-primary" value="Add to Cart" /></a>
+        
     </div>
     }
 </div>

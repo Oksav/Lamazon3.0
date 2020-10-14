@@ -42,7 +42,7 @@ namespace Services
         {
 
             User user = _mapper.Map<User>(registerModel);
-            //user.Orders = new List<Order>() { new Order() { Status = StatusType.Init } };
+            user.Orders = new List<Order>() { new Order() { Status = StatusType.Init } };
 
 
             IdentityResult identityRes = _userManager.CreateAsync(user, registerModel.Password).Result;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
+using WebModels.ViewModels;
 
 namespace WebApplication.Controllers
 {
@@ -33,6 +34,23 @@ namespace WebApplication.Controllers
            return View(_orderService.GetUserOrders(user.Id));
 
             
+        }
+
+        [HttpGet]
+        public IActionResult AddToCart(int productId)
+        {
+            UserViewModel user = _userService.GetByUsername(User.Identity.Name);
+            OrderViewModel order = _orderService.GetCurrentOrder(user.Id);
+            try
+            {
+                _orderService.AddProduct(order.Id, productId, user.Id);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return RedirectToAction("ListProducts", "Products");
         }
 
         

@@ -18,7 +18,7 @@ namespace DomainModels.Models
         public StatusType Status { get; set; }
         public string UserId { get; set; }
         public virtual User User { get; set; }
-        public virtual IEnumerable<OrderProduct> OrderProducts { get; set; }
+        public virtual List<OrderProduct> OrderProducts { get; set; }
 
 
     }

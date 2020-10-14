@@ -23,6 +23,10 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -49,6 +53,10 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IActionResult LogIn()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
         
@@ -58,7 +66,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public IActionResult LogIn(LoginViewModel model, string returnurl)
         {
-            //check for role to redirect to otheer page. Authorize the role is the problem!
+            
             if (!ModelState.IsValid)
             {
                 return View(model);

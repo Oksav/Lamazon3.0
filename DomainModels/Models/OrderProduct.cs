@@ -8,10 +8,11 @@ namespace DomainModels.Models
 {
    public class OrderProduct
     {
-        [Key, Column(Order = 0)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
-        [Key, Column(Order = 1)]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
 

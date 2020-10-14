@@ -19,7 +19,7 @@ namespace DataAccess.Repositories
 
         public Order GetById(int id)
         {
-            return _dbContext.Orders.FirstOrDefault(x => x.Id == id);
+            return _dbContext.Orders.Find(id);
         }
 
         public int Insert(Order entity)

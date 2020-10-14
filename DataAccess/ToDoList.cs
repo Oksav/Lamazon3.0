@@ -15,7 +15,7 @@ namespace DataAccess
         // admin to check on the users with full info
         //update product ne e iskoristeno trebe da se implementire ====== finished
         //delete funkcijata a povikave na httpget samo ====== finished
-
+        // should add quantity to products and add it in the modify product table
 
 
 

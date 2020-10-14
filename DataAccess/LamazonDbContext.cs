@@ -25,7 +25,8 @@ namespace DataAccess
             base.OnModelCreating(builder);
 
             builder.Entity<OrderProduct>()
-                .HasKey(op => new { op.OrderId, op.ProductId });
+                .HasKey(op => new { op.ProductId, op.OrderId });
+                
 
             builder.Entity<User>()
                 .HasMany(u => u.Orders)
@@ -54,6 +55,7 @@ namespace DataAccess
                 new IdentityRole { Id = adminRoleID, Name = "admin", NormalizedName = "ADMIN" },
                 new IdentityRole { Id = customerRoleID, Name = "customer", NormalizedName = "CUSTOMER" }
                 );
+
 
             //seeding the admin user with admin role
             string adminId = Guid.NewGuid().ToString();

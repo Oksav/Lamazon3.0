@@ -57,7 +57,8 @@ namespace WebApplication
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IOrderService, OrderService>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterViewModelValidation>());
 
         }
