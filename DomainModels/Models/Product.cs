@@ -11,14 +11,14 @@ namespace DomainModels.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ProductId { get; set; }
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required]
         public CategoryType Category { get; set; }
         [Required]
         public double Price { get; set; }
+        public int Quantity { get; set; }
         public virtual IEnumerable<OrderProduct> OrderProducts { get; set; }
 
 

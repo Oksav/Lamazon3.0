@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(LamazonDbContext))]
-    [Migration("20200830101734_Initial")]
+    [Migration("20201025144618_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,31 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DomainModels.Models.Invoice", b =>
+                {
+                    b.Property<int>("InvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adress");
+
+                    b.Property<DateTime>("DateOfPay");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("PaymentMethod");
+
+                    b.HasKey("InvoiceId");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Invoices");
+                });
+
             modelBuilder.Entity("DomainModels.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,7 +55,7 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("UserId");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -42,20 +64,26 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DomainModels.Models.OrderProduct", b =>
                 {
-                    b.Property<int>("OrderId");
-
                     b.Property<int>("ProductId");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.Property<int>("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("ProductId", "OrderId");
+
+                    b.HasAlternateKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("DomainModels.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -68,9 +96,20 @@ namespace DataAccess.Migrations
 
                     b.Property<double>("Price");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new { ProductId = 1, Category = 2, Description = "A small tool for removing unwanted hair in unwanted places", Name = "Epilator", Price = 30.0, Quantity = 5 },
+                        new { ProductId = 2, Category = 2, Description = "For IPhone X", Name = "Headphones", Price = 5.0, Quantity = 5 },
+                        new { ProductId = 3, Category = 4, Description = "A board game", Name = "Exploding Kittens", Price = 20.0, Quantity = 5 },
+                        new { ProductId = 4, Category = 1, Description = "A cool drink delivered to your door", Name = "Martini", Price = 10.0, Quantity = 5 },
+                        new { ProductId = 5, Category = 0, Description = "Meat, Salads, Fries", Name = "Hamburger", Price = 5.0, Quantity = 51 },
+                        new { ProductId = 6, Category = 3, Description = "by Gregor Hohpe and Bobby Woolf", Name = "Enterprise Integration Patterns", Price = 50.0, Quantity = 15 }
+                    );
                 });
 
             modelBuilder.Entity("DomainModels.Models.User", b =>
@@ -124,6 +163,10 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new { Id = "0caa7d28-b700-48c0-b42e-d20b0e725656", AccessFailedCount = 0, ConcurrencyStamp = "d94b55c2-b444-40a8-93a4-eb214c3aa2a0", Email = "theman@theman.com", EmailConfirmed = true, FullName = "TheMan", LockoutEnabled = false, NormalizedEmail = "THEMAN@THEMAN.COM", NormalizedUserName = "THEMAN", PasswordHash = "AQAAAAEAACcQAAAAENWj8obTh/0mBHj1Q67QHUlvxWZkTJmZYxNvFyYrXgjG76K5s+IISyZBz6pesLPPrA==", PhoneNumberConfirmed = false, SecurityStamp = "", TwoFactorEnabled = false, UserName = "theman" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -148,6 +191,11 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new { Id = "4474c70a-2554-4629-9b12-b03657474983", ConcurrencyStamp = "1e15a9b8-8997-4f96-94bd-3829f18a3029", Name = "admin", NormalizedName = "ADMIN" },
+                        new { Id = "afcca235-0f64-405b-afab-a3b2de99a8a6", ConcurrencyStamp = "9b3678d3-8207-4b00-a590-e676e6815c5d", Name = "customer", NormalizedName = "CUSTOMER" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -219,6 +267,10 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new { UserId = "0caa7d28-b700-48c0-b42e-d20b0e725656", RoleId = "4474c70a-2554-4629-9b12-b03657474983" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -234,6 +286,14 @@ namespace DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DomainModels.Models.Invoice", b =>
+                {
+                    b.HasOne("DomainModels.Models.Order", "Order")
+                        .WithOne("Invoice")
+                        .HasForeignKey("DomainModels.Models.Invoice", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DomainModels.Models.Order", b =>

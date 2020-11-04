@@ -50,13 +50,14 @@ namespace Services
             if (identityRes.Succeeded)
             {
               
-                 _userManager.AddToRoleAsync(user, "customer");                
-
+                 _userManager.AddToRoleAsync(user, "customer");
+               
                 Login(new LoginViewModel
                 {
                     Username = registerModel.Username,
                     Password = registerModel.Password
                 });
+                
                 return true;
             }
             else

@@ -22,7 +22,7 @@ namespace WebApplication.Controllers
        
         public IActionResult ListProducts()
         {
-            return View("Index",_productService.GetAllProducts());
+            return View(_productService.GetAllProducts());
         }
 
         [HttpGet]
@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
         public IActionResult ModifyProduct() 
         {
             IEnumerable<ProductViewModel> products = _productService.GetAllProducts();
-            ViewBag.Products = products;
+           // ViewBag.Products = products;
             return View(products);
         }
 
@@ -63,15 +63,16 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateProduct(int id)
         {
             ProductViewModel product = _productService.GetProductById(id);
-            ViewBag.Product = product;
-            return View();
+            return View(product);
         }
 
         [HttpPost]
-        public IActionResult UpdateProduct(ProductViewModel model)
+        [Authorize(Roles = "admin")]
+        public IActionResult UpdateProduct(ProductViewModel model) // vo update quantity ne se mene, go gube ID-to i zatoa ne prave update na productot
         {
             _productService.UpdateProduct(model);
             return RedirectToAction("ModifyProduct", "Products");

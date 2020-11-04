@@ -11,18 +11,18 @@ namespace DomainModels.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int InvoiceId { get; set; }
 
-        [Required]
-        public DateTime DateOfPay { get; set; }  // prociti getters i setters da go namestis vremto avtomatski da pokazave
+       
+        public DateTime DateOfPay { get; set; }  
 
-        [Required]
+        
         public PaymentType PaymentMethod { get; set; }
 
-        [Required]
+        
         public string Adress { get; set; }
 
-        [Required]
+       
         public int OrderId { get; set; }
 
         public virtual Order Order { get; set; }

@@ -12,5 +12,6 @@ namespace WebModels.ViewModels
         public string Address { get; set; }
         public double Price { get; set; }
         public int OrderId { get; set; }
+        public OrderViewModel Order { get; set; }
     }
 }

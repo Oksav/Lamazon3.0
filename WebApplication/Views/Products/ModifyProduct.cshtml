@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<ProductViewModel>;*@
+﻿@model IEnumerable<ProductViewModel>;
 
 @{
     ViewBag.Title = "Modify Product List";
@@ -13,24 +13,24 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Product</th>
                             <th>Description</th>
                             <th>Category</th>
+                            <th>Quantity</th>
                             <th>Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in @ViewBag.Products)
+                        @foreach (var product in Model)
                         {
                         <tr>
-                            <td>@product.Id</td>
                             <td>@product.Name</td>
                             <td>@product.Description</td>
                             <td>@product.Category</td>
+                            <td>@product.Quantity</td>
                             <td>@product.Price $</td>
-                            <td><a asp-controller="Products" asp-action="UpdateProduct" asp-route-id=@product.Id><input type="button" class="btn btn-primary" value="Update Product" /></a></td>
-                            <td><a asp-controller="Products" asp-action="DeleteProduct" asp-route-id=@product.Id><input type="button" class="btn btn-primary" value="Delete Product" /></a></td>
+                            <td><a asp-controller="Products" asp-action="UpdateProduct" asp-route-id=@product.ProductId><input type="button" class="btn btn-primary" value="Update Product" /></a></td>
+                            <td><a asp-controller="Products" asp-action="DeleteProduct" asp-route-id=@product.ProductId><input type="button" class="btn btn-danger" value="Delete Product" /></a></td>
 
                         </tr>
                         }
@@ -39,11 +39,6 @@
                 </table>
             </div>
     </div>
-
-
-
-
-
 
 </div>
 

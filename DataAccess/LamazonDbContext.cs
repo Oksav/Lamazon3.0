@@ -43,9 +43,10 @@ namespace DataAccess
                 .WithOne(op => op.Product)
                 .HasForeignKey(op => op.ProductId);
 
-            builder.Entity<Invoice>()
-                .HasOne(i => i.Order)
-                .WithOne();
+            builder.Entity<Order>()
+                .HasOne(x => x.Invoice)
+                .WithOne(x => x.Order)
+                .HasForeignKey<Invoice>(x => x.OrderId);
 
             string adminRoleID = Guid.NewGuid().ToString();
             string supplierRoleID = Guid.NewGuid().ToString();
@@ -83,12 +84,12 @@ namespace DataAccess
 
            //Seeding Products
            builder.Entity<Product>().HasData(
-                new Product { Id = 1, Name = "Epilator", Description = "A small tool for removing unwanted hair in unwanted places", Category = CategoryType.Electronics, Price = 30 },
-                new Product { Id = 2, Name = "Headphones", Description = "For IPhone X", Category = CategoryType.Electronics, Price = 5 },
-                new Product { Id = 3, Name = "Exploding Kittens", Description = "A board game", Category = CategoryType.Other, Price = 20 },
-                new Product { Id = 4, Name = "Martini", Description = "A cool drink delivered to your door", Category = CategoryType.Drinks, Price = 10 },
-                new Product { Id = 5, Name = "Hamburger", Description = "Meat, Salads, Fries", Category = CategoryType.Food, Price = 5 },
-                new Product { Id = 6, Name = "Enterprise Integration Patterns", Description = "by Gregor Hohpe and Bobby Woolf", Category = CategoryType.Books, Price = 50 }
+                new Product { ProductId = 1, Name = "Epilator", Description = "A small tool for removing unwanted hair in unwanted places", Category = CategoryType.Electronics, Price = 30, Quantity = 5 },
+                new Product { ProductId = 2, Name = "Headphones", Description = "For IPhone X", Category = CategoryType.Electronics, Price = 5, Quantity = 5 },
+                new Product { ProductId = 3, Name = "Exploding Kittens", Description = "A board game", Category = CategoryType.Other, Price = 20, Quantity = 5  },
+                new Product { ProductId = 4, Name = "Martini", Description = "A cool drink delivered to your door", Category = CategoryType.Drinks, Price = 10, Quantity = 5 },
+                new Product { ProductId = 5, Name = "Hamburger", Description = "Meat, Salads, Fries", Category = CategoryType.Food, Price = 5, Quantity = 51 },
+                new Product { ProductId = 6, Name = "Enterprise Integration Patterns", Description = "by Gregor Hohpe and Bobby Woolf", Category = CategoryType.Books, Price = 50, Quantity = 15 }
             );
         }
     }

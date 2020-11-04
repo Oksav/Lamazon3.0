@@ -31,31 +31,36 @@ namespace WebApplication.Controllers
         public IActionResult UserOrders()
         {
             var user = _userService.GetByUsername(User.Identity.Name);
-           return View(_orderService.GetUserOrders(user.Id));
+            IEnumerable<OrderViewModel> userOrder = _orderService.GetUserOrders(user.Id);
 
-            
-        }
+            return View(userOrder);
 
-        [HttpGet]
-        public IActionResult AddToCart(int productId)
-        {
-            UserViewModel user = _userService.GetByUsername(User.Identity.Name);
-            OrderViewModel order = _orderService.GetCurrentOrder(user.Id);
-            try
-            {
-                _orderService.AddProduct(order.Id, productId, user.Id);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-            return RedirectToAction("ListProducts", "Products");
         }
 
         
+        public IActionResult AddToCart(int productId)
+        {
+
+            UserViewModel user = _userService.GetByUsername(User.Identity.Name);
+
+            _orderService.AddProductToOrder(productId , user.Id);
 
 
+            return RedirectToAction("ListProducts", "Products");
 
+
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult ListAllOrders()
+        {
+            return View(_orderService.GetAllOrders());
+        }
+
+
+        public IActionResult OrderDetails(int orderId)
+        {
+            return View(_orderService.GetOrderById(orderId));
+        }
     }
 }

@@ -12,7 +12,6 @@ namespace WebModels.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        // password regex anotation za cliens side validacija a moze da se upotrebe i da se modificire 
         public string Password { get; set; }
 
     }

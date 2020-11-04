@@ -7,10 +7,12 @@ namespace WebModels.ViewModels
 {
     public class ProductViewModel
     {
-        public int Id { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int Quantity { get; set; }
         public CategoryTypeViewModel Category { get; set; }
         public double Price { get; set; }
+        //should add quantity
     }
 }

@@ -29,7 +29,6 @@ namespace Services.Helpers
             services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IRepository<Product>, ProductRepository>();
             services.AddTransient<IRepository<Order>, OrderRepository>();
-            services.AddTransient<IRepository<OrderProduct>, OrderProductRepository>();
             services.AddTransient<IRepository<Invoice>, InvoiceRepository>();
 
                 return services;

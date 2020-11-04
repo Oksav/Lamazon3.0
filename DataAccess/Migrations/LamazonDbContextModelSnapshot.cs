@@ -21,12 +21,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DomainModels.Models.Invoice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("InvoiceId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Adress")
-                        .IsRequired();
+                    b.Property<string>("Adress");
 
                     b.Property<DateTime>("DateOfPay");
 
@@ -34,7 +33,7 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("PaymentMethod");
 
-                    b.HasKey("Id");
+                    b.HasKey("InvoiceId");
 
                     b.HasIndex("OrderId")
                         .IsUnique();
@@ -44,7 +43,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DomainModels.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -54,7 +53,7 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("UserId");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -82,7 +81,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DomainModels.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -95,17 +94,19 @@ namespace DataAccess.Migrations
 
                     b.Property<double>("Price");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
 
                     b.HasData(
-                        new { Id = 1, Category = 2, Description = "A small tool for removing unwanted hair in unwanted places", Name = "Epilator", Price = 30.0 },
-                        new { Id = 2, Category = 2, Description = "For IPhone X", Name = "Headphones", Price = 5.0 },
-                        new { Id = 3, Category = 4, Description = "A board game", Name = "Exploding Kittens", Price = 20.0 },
-                        new { Id = 4, Category = 1, Description = "A cool drink delivered to your door", Name = "Martini", Price = 10.0 },
-                        new { Id = 5, Category = 0, Description = "Meat, Salads, Fries", Name = "Hamburger", Price = 5.0 },
-                        new { Id = 6, Category = 3, Description = "by Gregor Hohpe and Bobby Woolf", Name = "Enterprise Integration Patterns", Price = 50.0 }
+                        new { ProductId = 1, Category = 2, Description = "A small tool for removing unwanted hair in unwanted places", Name = "Epilator", Price = 30.0, Quantity = 5 },
+                        new { ProductId = 2, Category = 2, Description = "For IPhone X", Name = "Headphones", Price = 5.0, Quantity = 5 },
+                        new { ProductId = 3, Category = 4, Description = "A board game", Name = "Exploding Kittens", Price = 20.0, Quantity = 5 },
+                        new { ProductId = 4, Category = 1, Description = "A cool drink delivered to your door", Name = "Martini", Price = 10.0, Quantity = 5 },
+                        new { ProductId = 5, Category = 0, Description = "Meat, Salads, Fries", Name = "Hamburger", Price = 5.0, Quantity = 51 },
+                        new { ProductId = 6, Category = 3, Description = "by Gregor Hohpe and Bobby Woolf", Name = "Enterprise Integration Patterns", Price = 50.0, Quantity = 15 }
                     );
                 });
 
@@ -162,7 +163,7 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "7291392a-65f5-41e0-99ae-22288f10902f", AccessFailedCount = 0, ConcurrencyStamp = "d44bbd66-8d55-4760-b34d-cc1d569a4b87", Email = "theman@theman.com", EmailConfirmed = true, FullName = "TheMan", LockoutEnabled = false, NormalizedEmail = "THEMAN@THEMAN.COM", NormalizedUserName = "THEMAN", PasswordHash = "AQAAAAEAACcQAAAAEB1elZZ+fX9LXOeVvC/pTTg1wbtIwBFM7QDqySlPLt7URxIHF15B0EB7qsCcwQ1F+A==", PhoneNumberConfirmed = false, SecurityStamp = "", TwoFactorEnabled = false, UserName = "theman" }
+                        new { Id = "0caa7d28-b700-48c0-b42e-d20b0e725656", AccessFailedCount = 0, ConcurrencyStamp = "d94b55c2-b444-40a8-93a4-eb214c3aa2a0", Email = "theman@theman.com", EmailConfirmed = true, FullName = "TheMan", LockoutEnabled = false, NormalizedEmail = "THEMAN@THEMAN.COM", NormalizedUserName = "THEMAN", PasswordHash = "AQAAAAEAACcQAAAAENWj8obTh/0mBHj1Q67QHUlvxWZkTJmZYxNvFyYrXgjG76K5s+IISyZBz6pesLPPrA==", PhoneNumberConfirmed = false, SecurityStamp = "", TwoFactorEnabled = false, UserName = "theman" }
                     );
                 });
 
@@ -190,8 +191,8 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "62ce939b-32ca-422f-ab1c-22f92cb51392", ConcurrencyStamp = "d4d39181-7fa8-43bd-b68a-07f5cb79767f", Name = "admin", NormalizedName = "ADMIN" },
-                        new { Id = "9de1af93-4494-417d-a139-343d883fac2b", ConcurrencyStamp = "b033145c-a0ed-4709-90f5-843560ba540c", Name = "customer", NormalizedName = "CUSTOMER" }
+                        new { Id = "4474c70a-2554-4629-9b12-b03657474983", ConcurrencyStamp = "1e15a9b8-8997-4f96-94bd-3829f18a3029", Name = "admin", NormalizedName = "ADMIN" },
+                        new { Id = "afcca235-0f64-405b-afab-a3b2de99a8a6", ConcurrencyStamp = "9b3678d3-8207-4b00-a590-e676e6815c5d", Name = "customer", NormalizedName = "CUSTOMER" }
                     );
                 });
 
@@ -266,7 +267,7 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "7291392a-65f5-41e0-99ae-22288f10902f", RoleId = "62ce939b-32ca-422f-ab1c-22f92cb51392" }
+                        new { UserId = "0caa7d28-b700-48c0-b42e-d20b0e725656", RoleId = "4474c70a-2554-4629-9b12-b03657474983" }
                     );
                 });
 
@@ -288,7 +289,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DomainModels.Models.Invoice", b =>
                 {
                     b.HasOne("DomainModels.Models.Order", "Order")
-                        .WithOne()
+                        .WithOne("Invoice")
                         .HasForeignKey("DomainModels.Models.Invoice", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

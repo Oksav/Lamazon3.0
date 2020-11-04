@@ -12,9 +12,9 @@ namespace Services.Interfaces
         IEnumerable<OrderViewModel> GetUserOrders(string userId);
         OrderViewModel GetOrderById(int id);
         OrderViewModel GetCurrentOrder(string userId);
-        void CreateOrder(OrderViewModel model);
-        void ChangeStatus(int orderId, StatusTypeViewModel status);
-        void AddProduct(int orderId, int productId, string userId);
-        void RemoveProduct(int orderId, int productId);
+        void CreateOrder(OrderViewModel model, string userId);
+        int ChangeStatus(int orderId, string userId, StatusTypeViewModel status);
+        int AddProductToOrder(int productId, string userId);
+        void RemoveProductFromOrder(int orderId, int productId);
     }
 }

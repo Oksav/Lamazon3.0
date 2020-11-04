@@ -37,10 +37,12 @@ namespace DataAccess.Repositories
             User user = _dbContext.Users.FirstOrDefault(x => x.Id == entity.Id);
             if (user == null) return -1;
 
-            user.NormalizedEmail = entity.NormalizedEmail;
-            user.Email = entity.Email;
-            user.NormalizedUserName = entity.NormalizedUserName;
-            user.UserName = entity.UserName;
+            //user.NormalizedEmail = entity.NormalizedEmail;
+            //user.Email = entity.Email;
+            //user.NormalizedUserName = entity.NormalizedUserName;
+            //user.UserName = entity.UserName;
+
+             _dbContext.Users.Update(entity);
 
             return _dbContext.SaveChanges();
         }

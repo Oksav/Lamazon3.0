@@ -15,12 +15,12 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Invoice> GetAll()
         {
-            return _dbContext.Invoices.ToList();
+            return _dbContext.Invoices;
         }
 
         public Invoice GetById(int id)
         {
-            return _dbContext.Invoices.FirstOrDefault(x => x.Id == id);
+            return _dbContext.Invoices.SingleOrDefault(x => x.InvoiceId == id);
         }
 
         public int Insert(Invoice entity)
@@ -31,19 +31,17 @@ namespace DataAccess.Repositories
 
         public int Update(Invoice entity)
         {
-            Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.Id == entity.Id);
+            Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.InvoiceId == entity.InvoiceId);
             if (invoice == null) return -1;
 
-            invoice.Adress = entity.Adress;
-            invoice.PaymentMethod = entity.PaymentMethod;
-            invoice.DateOfPay = entity.DateOfPay;
+            _dbContext.Invoices.Update(entity);
 
             return _dbContext.SaveChanges();
         }
 
         public int Delete(int id)
         {
-            Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.Id == id);
+            Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.InvoiceId == id);
             if (invoice == null) return -1;
 
             _dbContext.Invoices.Remove(invoice);

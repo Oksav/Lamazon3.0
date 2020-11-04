@@ -15,51 +15,84 @@ namespace Services
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order> _orderRepository;
-        private readonly IRepository<OrderProduct> _orderProductRepository;
         private readonly IUserRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly IRepository<Product> _productRepository;
 
         public OrderService(IRepository<Order> orderRepo,
-            IRepository<OrderProduct> orderProductRepo,
             IUserRepository<User> userRepo,
             IMapper mapper,
             IRepository<Product> productRepository)
         {
             _orderRepository = orderRepo;
-            _orderProductRepository = orderProductRepo;
             _userRepository = userRepo;
             _mapper = mapper;
             _productRepository = productRepository;
         }
 
-        public void CreateOrder(OrderViewModel model)
-        {
-            _orderRepository.Insert(_mapper.Map<Order>(model));
-        }
+        
 
-
-
-
-        public IEnumerable<OrderViewModel> GetAllOrders()
+        public IEnumerable<OrderViewModel> GetAllOrders() 
         {
             return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll());
         }
 
 
+        public IEnumerable<OrderViewModel> GetUserOrders(string userId) // userot da si gi provere odrerto
+        {
+            return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll().Where(x => x.UserId == userId));
+        }
+
 
 
         public OrderViewModel GetCurrentOrder(string userId) 
         {
-            Order order = _orderRepository.GetAll().FirstOrDefault(x => x.UserId == userId); // get all gi zime site od baza i gi filtrire. moze da se razmislis za nov metod so koristejne na find ako veke go ime da ne prave povik do databaza
-            
-            if(order == null || order.Status != StatusType.Init)                               // isto vaze za sekade deka sho go imis iskoristeno getall() ili da vrne poveke elementi pa pa filtriris
+            try
             {
-                CreateOrder(new OrderViewModel { User = new UserViewModel { Id = userId }, Status = StatusTypeViewModel.Init });
-                return GetCurrentOrder(userId);
+                Order order = _orderRepository.GetAll().Where(x => x.UserId == userId && x.Status == StatusType.Init).FirstOrDefault();
+                OrderViewModel orderViewModel = _mapper.Map<OrderViewModel>(order);
+
+                if(order.OrderProducts != null){
+
+                IEnumerable<Product> products = order.OrderProducts.Select(x => _productRepository.GetById(x.ProductId));
+
+                orderViewModel.Products = _mapper.Map<List<ProductViewModel>>(products);
+
+                }
+                               
+                return orderViewModel;
+                           
+            }
+            catch (Exception ex)
+            {
+                string message = $"Order does not exist! {ex.InnerException}";
+                throw new Exception(message ,ex);
             }
 
-            return _mapper.Map<OrderViewModel>(order);
+            
+        }
+
+        public int AddProductToOrder(int productId, string userId) // koga dodaavis veke postoecki produkt vo order(so ist orderId i productId vage errror alreaady exist od database).
+        {
+
+            try
+            {
+                Product product = _productRepository.GetById(productId);
+                Order order = _orderRepository.GetAll().Where(x => x.UserId == userId && x.Status == StatusType.Init).LastOrDefault();
+                User user = _userRepository.GetById(userId);
+
+                OrderProduct newOrderProduct = new OrderProduct { Order = order, Product = product };
+
+                order.OrderProducts.Add(newOrderProduct);
+                order.User = user;
+                return _orderRepository.Update(order);
+            }
+            catch (Exception ex)
+            {
+                string message = $"Something went wrong with adding your product {ex.InnerException}";
+                throw new Exception(message, ex);
+            }
+
         }
 
 
@@ -67,69 +100,74 @@ namespace Services
 
         public OrderViewModel GetOrderById(int id)  // koa ke imme lista od poveke ordere
         {
-            Order order = _orderRepository.GetById(id);
-            if (order == null)
-                throw new Exception("Order does not exist.");
+            try
+            {
+                return _mapper.Map<OrderViewModel>(_orderRepository.GetById(id));
+            }
+            catch(Exception ex)
+            {
+                string message = $"Order does not exist! {ex.InnerException}";
+                throw new Exception(message, ex);
+            }
+        }
 
-            return _mapper.Map<OrderViewModel>(order);
+
+        public void CreateOrder(OrderViewModel model, string userId)
+        {
+            try
+            {
+                User user = _userRepository.GetById(userId);
+
+                Order createdOrder = _mapper.Map<Order>(model);
+
+                createdOrder.User = user;
+
+                _orderRepository.Insert(createdOrder);
+            }
+            catch (Exception ex)
+            {
+                string message = $"Something went wrong with creating your order! {ex.InnerException}";
+                throw new Exception(message, ex);
+            }
         }
 
 
 
-
-
-        public IEnumerable<OrderViewModel> GetUserOrders(string userId) // userot da si gi provere odrerto
+        public int ChangeStatus(int orderId,string userId, StatusTypeViewModel status)
         {
-            return _mapper.Map<IEnumerable<OrderViewModel>>(_orderRepository.GetAll().Where(u => u.UserId == userId));
-        }
+            try
+            {
+                User user = _userRepository.GetById(userId);
+                Order order = _orderRepository.GetById(orderId);
 
+                order.Status = (StatusType)status;
 
-
-
-
-        public void ChangeStatus(int orderId, StatusTypeViewModel status)
-        {
-            _orderRepository.Update(
-                new Order
+                if(status == StatusTypeViewModel.Processing)
                 {
-                    Id = orderId,
-                    Status = (StatusType)status
-                });
+                    _orderRepository.Insert(new Order()
+                    {
+                        User = user,
+                        Status = StatusType.Init
+                    });
+                }
+               return _orderRepository.Update(order);
+            }
+            catch(Exception ex)
+            {
+                string message = $"Something went wrong with updating the Status! {ex.InnerException}";
+                throw new Exception(message, ex);
+            }
         }
 
 
 
 
 
-        public void AddProduct(int orderId, int productId, string userId)
-        {
-
-            Product product = _productRepository.GetById(productId);
-            Order order = _orderRepository.GetById(orderId);
-            User user = _userRepository.GetById(userId);
-
-            order.OrderProducts.Add(
-                new OrderProduct()
-                {
-                    Product = product,
-                    Order = order
-                });
-            order.User = user;
-            _orderRepository.Update(order);
-
-
-        }
-
-
-        
-
-
-        public void RemoveProduct(int orderId, int productId)
-        {
-            _orderProductRepository.Delete( int.Parse($"{orderId} {productId}") );
-        }
-
-        
        
+
+        public void RemoveProductFromOrder(int orderId, int productId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

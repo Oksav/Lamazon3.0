@@ -14,12 +14,12 @@ namespace DataAccess.Repositories
        
         public IEnumerable<Product> GetAll()
         {
-            return _dbContext.Products.ToList();
+            return _dbContext.Products;
         }
 
         public Product GetById(int id)
         {
-            return _dbContext.Products.FirstOrDefault(x => x.Id == id);
+            return _dbContext.Products.FirstOrDefault(x => x.ProductId == id);
         }
 
         public int Insert(Product entity)
@@ -30,20 +30,14 @@ namespace DataAccess.Repositories
 
         public int Update(Product entity)
         {
-            Product product = _dbContext.Products.FirstOrDefault(x => x.Id == entity.Id);
-            if (product == null) return -1;
-
-            product.Name = entity.Name;
-            product.Price = entity.Price;
-            product.Description = entity.Description;
-            product.Category = entity.Category;
+            _dbContext.Products.Update(entity);
 
             return _dbContext.SaveChanges();
         }
 
         public int Delete(int id)
         {
-            Product product = _dbContext.Products.FirstOrDefault(x => x.Id == id);
+            Product product = _dbContext.Products.FirstOrDefault(x => x.ProductId == id);
             if (product == null) return -1;
 
             _dbContext.Products.Remove(product);

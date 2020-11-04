@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DomainModels.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,22 @@ namespace DataAccess.Repositories
        
         public IEnumerable<Order> GetAll()
         {
-            return _dbContext.Orders.ToList();
+            return _dbContext.Orders
+                .Include(o => o.Invoice)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(po => po.Product)
+                .Include(o => o.User);
+                
         }
 
         public Order GetById(int id)
         {
-            return _dbContext.Orders.Find(id);
+            return _dbContext.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(po => po.Product)
+                .Include(o => o.User)
+                .Include(o => o.Invoice)
+                .FirstOrDefault(o => o.OrderId == id);
         }
 
         public int Insert(Order entity)
@@ -30,18 +41,13 @@ namespace DataAccess.Repositories
 
         public int Update(Order entity)
         {
-            Order order = _dbContext.Orders.FirstOrDefault(x => x.Id == entity.Id);
-            if (order == null) return -1;
-
-            order.Status = entity.Status;
-            order.DateCreated = entity.DateCreated;
-
+            _dbContext.Orders.Update(entity);
             return _dbContext.SaveChanges();
         }
 
         public int Delete(int id)
         {
-            Order order = _dbContext.Orders.FirstOrDefault(x => x.Id == id);
+            Order order = _dbContext.Orders.FirstOrDefault(x => x.OrderId == id);
             if (order == null) return -1;
 
             _dbContext.Orders.Remove(order);
