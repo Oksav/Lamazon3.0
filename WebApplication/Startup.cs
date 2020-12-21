@@ -60,7 +60,8 @@ namespace WebApplication
 
             services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterViewModelValidation>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterViewModelValidation>())
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginViewModelValidation>());
 
         }
             

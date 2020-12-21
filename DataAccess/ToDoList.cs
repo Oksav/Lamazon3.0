@@ -17,13 +17,13 @@ namespace DataAccess
         //delete funkcijata a povikave na httpget samo ====== finished
         // quantity add it in the modify product table ==== finished
         // update interface to the list products. ==== finished
-        // the user wants to delete an item from the basket
-        // in my orders if you press on existing order with status init you can edit it(as user). else you can just see and get invoice
+        // the user wants to delete an item from the basket === finished
         //add picture to database and upload
-        // if someone puts items in the basket we have to lower the quantity in database or if it cancels the order we have to add in the quantity.
+        // if someone buys items we have to lower the quantity in database or if it cancels the order we have to add in the quantity.
         // sum for the products in the basket == finished
         //add quantity field in the product list
         // list all orders for admin and enter in eachone(you have to create a view that will be used for the user also).
+        // validation if the user is correct but the password is wrong3 === finished
         
 
         // Orders part

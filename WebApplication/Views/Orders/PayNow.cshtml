@@ -1,0 +1,62 @@
+﻿@model InvoiceViewModel;
+
+@{
+    ViewBag.Title = "Invoice";
+}
+
+<h1>Invoice</h1>
+
+
+
+<div class="row">
+
+
+    
+
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span class="badge badge-secondary badge-pill">@Model.Order.Products.Count</span>
+                </h4>
+                <ul class="list-group mb-3 sticky-top">
+                    @foreach (var product in Model.Order.Products)
+                    {
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6>@product.Name</h6>
+                                <small class="text-muted">@product.Description</small>
+                            </div>
+                            <span class="text-muted">@product.Price$</span>
+                        </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h4><b>Total Price: </b></h4>
+                            <h3 class="text-muted">@Model.Order.Products.Sum(x => x.Price)$</h3>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Address">Adress</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentMethod">Payment Method</label>
+                <select asp-for="PaymentMethod" class="form-control" asp-items="Html.GetEnumSelectList<PaymentTypeViewModel>() ">
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+        </form>
+
+    </div>
+</div>

@@ -34,12 +34,12 @@ namespace WebApplication.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
 
             if (ModelState.IsValid)
             {
-                _userService.Register(model);
+               await _userService.Register(model);
                 return RedirectToAction("About", "Home");
 
             }
@@ -64,31 +64,34 @@ namespace WebApplication.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult LogIn(LoginViewModel model, string returnurl)
+        public async Task<IActionResult> LogIn(LoginViewModel model, string returnurl)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             else
             {
-              //  if (_userService.CheckIfUserExists(model.Username))
-                _userService.Login(model);
-
-                if (!string.IsNullOrEmpty(returnurl) && Url.IsLocalUrl(returnurl))
-                    return Redirect(returnurl);
+                var result = await _userService.Login(model);      // if everything is valid, you  still stay on the login page like you are not logged
+                if (result == true)
+                {
+                    if (!string.IsNullOrEmpty(returnurl) && Url.IsLocalUrl(returnurl))
+                        return Redirect(returnurl);
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
+                else
+                    ModelState.AddModelError("", "User and password do not match!");
+                return View(model);
             }
-
-            return RedirectToAction("Index", "Home");
-
 
         }
 
 
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
-           await _userService.LogOut();
+            _userService.LogOut();
             return RedirectToAction("Index", "Home"); // ima problem, ne sake redirect da naprave na log in da naprave
         }
 

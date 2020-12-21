@@ -35,11 +35,14 @@ namespace Services.Helpers
                 .ForMember(o => o.OrderProducts, src => src.Ignore());
 
             CreateMap<Invoice, InvoiceViewModel>()
-                .ForMember(iv => iv.Price, src => src.ResolveUsing(i => i.Order.OrderProducts.Sum(op => op.Product.Price)))
+                .ForMember(iv => iv.Address, src => src.MapFrom(i => i.Adress))
+                .ForMember(iv => iv.Id, src => src.ResolveUsing(i => i.InvoiceId))
                 .ReverseMap()
-                .ForMember(i => i.InvoiceId, src => src.Ignore())
-                .ForMember(i => i.DateOfPay, src => src.ResolveUsing(iv => DateTime.Now))
-                .ForMember(i => i.Order, src => src.Ignore());
+                .ForMember(i => i.Adress, src => src.ResolveUsing(iv => iv.Address))
+                .ForMember(i => i.DateOfPay, src => src.ResolveUsing(iv => DateTime.UtcNow))
+                .ForMember(i => i.Order, src => src.Ignore())
+                .ForMember(i => i.InvoiceId, src => src.MapFrom(iv => iv.Id));
+            
 
 
 

@@ -15,8 +15,8 @@ namespace Services.Helpers
     {
         public static IServiceCollection RegisterModule(IServiceCollection services, string connectionString)
         {
-            services.AddDbContextPool<LamazonDbContext>(ob => ob.UseSqlServer(connectionString));
-
+            // services.AddDbContextPool<LamazonDbContext>(ob => ob.UseSqlServer(connectionString));
+            services.AddDbContext<LamazonDbContext>(ob => ob.UseSqlServer(connectionString));//, ServiceLifetime.Transient);
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -30,6 +30,7 @@ namespace Services.Helpers
             services.AddTransient<IRepository<Product>, ProductRepository>();
             services.AddTransient<IRepository<Order>, OrderRepository>();
             services.AddTransient<IRepository<Invoice>, InvoiceRepository>();
+            services.AddTransient<IRepository<OrderProduct>, OrderProductRepository>();
 
                 return services;
         }

@@ -1,15 +1,13 @@
 ﻿using DataAccess.Interfaces;
 using DomainModels.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataAccess.Repositories
 {
     public class UserRepository : BaseRepository<LamazonDbContext>, IUserRepository<User>
     {
-      public UserRepository(LamazonDbContext context) : base(context) { }
+        public UserRepository(LamazonDbContext context) : base(context) { }
 
         public IEnumerable<User> GetAll()
         {
@@ -34,16 +32,7 @@ namespace DataAccess.Repositories
 
         public int Update(User entity)
         {
-            User user = _dbContext.Users.FirstOrDefault(x => x.Id == entity.Id);
-            if (user == null) return -1;
-
-            //user.NormalizedEmail = entity.NormalizedEmail;
-            //user.Email = entity.Email;
-            //user.NormalizedUserName = entity.NormalizedUserName;
-            //user.UserName = entity.UserName;
-
-             _dbContext.Users.Update(entity);
-
+            _dbContext.Users.Update(entity);
             return _dbContext.SaveChanges();
         }
 
@@ -56,6 +45,6 @@ namespace DataAccess.Repositories
             return _dbContext.SaveChanges();
         }
 
-      
+
     }
 }

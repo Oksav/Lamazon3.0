@@ -14,10 +14,12 @@ namespace Services
     {
         private readonly IRepository<Invoice> _invoiceRepository;
         private readonly IMapper _mapper;
+        private readonly IRepository<Order> _orderRepository;
 
-        public InvoiceService(IRepository<Invoice> invoiceRepo, IMapper mapper)
+        public InvoiceService(IRepository<Invoice> invoiceRepo, IRepository<Order> orderRepository, IMapper mapper)
         {
             _invoiceRepository = invoiceRepo;
+            _orderRepository = orderRepository;
             _mapper = mapper;
         }
 
@@ -29,10 +31,38 @@ namespace Services
         public InvoiceViewModel GetInvoice(int orderId)
         {
             Invoice invoice = _invoiceRepository.GetAll().FirstOrDefault(i => i.OrderId == orderId);
+
             if (invoice == null)
                 throw new Exception("Invoice is not generated");
 
             return _mapper.Map<InvoiceViewModel>(invoice);
         }
+
+
+        public InvoiceViewModel AddInvoiceToOrder(int orderId)
+        {
+            Order order = _orderRepository.GetById(orderId);
+
+            Invoice newInvoice = new Invoice
+            {
+                Order = order,
+            };
+            _invoiceRepository.Insert(newInvoice);
+            return GetInvoice(orderId);
+        }
+
+        public void UpdateModel(InvoiceViewModel model)
+        {
+            InvoiceViewModel invoice = GetInvoice(model.OrderId);
+
+                invoice.Address = model.Address;
+                invoice.PaymentMethod = model.PaymentMethod;
+                
+
+           _invoiceRepository.Update(_mapper.Map<Invoice>(invoice));
+
+        }
+
+       
     }
 }

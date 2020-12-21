@@ -8,10 +8,7 @@ namespace WebModels.Enums
     {
         Init,
         Processing,
-        Confirmed,
-        Declined,
         Delivered,
-        Canceled,
         Paid
     }
 }

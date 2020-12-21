@@ -9,11 +9,12 @@ namespace Services.Interfaces
 {
     public interface IUserService
     {
-        bool Register(RegisterViewModel registerModel);
-        void Login(LoginViewModel loginViewModel);
+        Task<bool> Register(RegisterViewModel registerModel);
+        Task<bool> Login(LoginViewModel loginViewModel);
         Task LogOut();
         UserViewModel GetByUsername(string username);
         IEnumerable<UserViewModel> GetAllUsers();
+        //bool AreEmailAndPasswordValid(string username, string password);  izbacen od upotreba, mozebi ponanaki
 
 
     }

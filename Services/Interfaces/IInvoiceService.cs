@@ -11,5 +11,7 @@ namespace Services.Interfaces
     {
         void CreateInvoice(InvoiceViewModel invoice);
         InvoiceViewModel GetInvoice(int orderId);
+        InvoiceViewModel AddInvoiceToOrder(int orderId);
+        void UpdateModel(InvoiceViewModel model);
     }
 }

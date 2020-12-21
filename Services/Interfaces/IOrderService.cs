@@ -14,7 +14,7 @@ namespace Services.Interfaces
         OrderViewModel GetCurrentOrder(string userId);
         void CreateOrder(OrderViewModel model, string userId);
         int ChangeStatus(int orderId, string userId, StatusTypeViewModel status);
-        int AddProductToOrder(int productId, string userId);
-        void RemoveProductFromOrder(int orderId, int productId);
+        int AddProductToOrder(int orderId, int productId, string userId);
+        bool RemoveProductFromOrder(int orderId, int productId);
     }
 }

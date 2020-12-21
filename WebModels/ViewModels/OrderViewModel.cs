@@ -14,6 +14,6 @@ namespace WebModels.ViewModels
         public double Price => Products.Sum(p => p.Price);
         public UserViewModel User { get; set; }
         public List<ProductViewModel> Products { get; set; }
-        //public InvoiceViewModel Invoice { get; set; }
+        public InvoiceViewModel Invoice { get; set; }
     }
 }

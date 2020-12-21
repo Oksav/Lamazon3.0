@@ -37,22 +37,21 @@ namespace Services
 
                           
 
-        public bool Register(RegisterViewModel registerModel)  // when making the method async after the identity result continues to redirect without doing the checking in the if method,
-                                                               // creating the user, login the user or assining role. and does not throw any kind of exeption
+        public async Task<bool> Register(RegisterViewModel registerModel)  
         {
 
             User user = _mapper.Map<User>(registerModel);
-            user.Orders = new List<Order>() { new Order() { Status = StatusType.Init } };
+            user.Orders = new List<Order>() { new Order() { Status = StatusType.Init, DateCreated = DateTime.UtcNow } };
 
 
-            IdentityResult identityRes = _userManager.CreateAsync(user, registerModel.Password).Result;
+            IdentityResult identityRes = await _userManager.CreateAsync(user, registerModel.Password);
 
             if (identityRes.Succeeded)
             {
               
-                 _userManager.AddToRoleAsync(user, "customer");
+                await _userManager.AddToRoleAsync(user, "customer");
                
-                Login(new LoginViewModel
+               await Login(new LoginViewModel
                 {
                     Username = registerModel.Username,
                     Password = registerModel.Password
@@ -66,17 +65,19 @@ namespace Services
 
         
 
-        public void Login(LoginViewModel loginViewModel)
+        public async Task<bool> Login(LoginViewModel loginViewModel)
         {
             
-                SignInResult signInResult = _signInManager.PasswordSignInAsync(
+                SignInResult signInResult = await _signInManager.PasswordSignInAsync(
                 loginViewModel.Username,
                 loginViewModel.Password,
                 false,
-                false).Result; 
+                false);
 
-                if (!signInResult.Succeeded)
-                    new IdentityError();  // Ne go dave koga ke promasis user i password
+            if (signInResult.Succeeded)
+                return true;
+            else
+                return false;
             
         }
 
@@ -91,7 +92,6 @@ namespace Services
         public UserViewModel GetByUsername(string username)
         {
             User user = _userRepository.GetByUsername(username);
-            if (user == null) throw new Exception("User does not exist");
 
             return _mapper.Map<UserViewModel>(user);
         }
@@ -101,5 +101,26 @@ namespace Services
         {
             return _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
         }
+
+        //public bool AreEmailAndPasswordValid(string username, string password)   // za proverka na password ama hashave razlicni vage.
+        //{
+        //    UserViewModel searchedUser = GetByUsername(username);
+        //    if (searchedUser != null)
+        //    {
+        //        User user = _userRepository.GetById(searchedUser.Id);
+        //        var passwordHush = new PasswordHasher<User>();
+        //        string enteredPassword = passwordHush.HashPassword(user, password);
+
+        //        if (user.UserName == username && user.PasswordHash == enteredPassword)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //            return false;
+        //    }
+        //    else
+        //        return false;
+            
+        //}
     }
 }

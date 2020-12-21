@@ -19,13 +19,14 @@ namespace Services.Validators
 
             RuleFor(rm => rm.Username).NotEmpty().WithMessage("You have to enter username");
             RuleFor(rm => rm.Username).Matches("^[a-zA-Z0-9_.-]*$").WithMessage("Username can only contain numbers, letters, underscore(_), dash(-) and point(.)");
+            RuleFor(rm => rm.Username).MinimumLength(5).WithMessage("Minimum lenght required is 5");
             RuleFor(rm => rm.Username).MaximumLength(25).WithMessage("Max lenght of username is 25");
             RuleFor(rm => rm.Username).Must(username => CheckIfUserExists(username) == false).WithMessage("The username already exists");
             
            
 
             RuleFor(rm => rm.Email).NotEmpty().EmailAddress().WithMessage("You must enter correct email address. Example: example@lamazon.com.");
-            RuleFor(rm => rm.Email).Must(email => CheckIfEmailExists(email) == false).WithMessage("Email is already in use");
+            RuleFor(rm => rm.Email).Must(email => CheckIfEmailIsUnique(email) == false).WithMessage("Email is already in use");
             
 
             RuleFor(rm => rm.FullName).NotEmpty().WithMessage("You must enter your full name");  
@@ -41,16 +42,16 @@ namespace Services.Validators
 
         private bool CheckIfUserExists(string username)
         {
-            var user = _userService.GetAllUsers().Where(u => u.Username == username).SingleOrDefault();
+            var user = _userService.GetByUsername(username);
             if (user != null)
                 return true;
             else
                 return false;
         }
 
-        private bool CheckIfEmailExists(string email)
+        private bool CheckIfEmailIsUnique(string email)
         {
-            var emailExist = _userService.GetAllUsers().Where(e => e.Email == email).SingleOrDefault();
+            var emailExist = _userService.GetAllUsers().Select(e => e.Email).Where(e => e == email).SingleOrDefault();
 
             if (emailExist != null)
                 return true;

@@ -7,22 +7,26 @@ using WebModels.ViewModels;
 
 namespace Services.Validators
 {
-    class LoginViewModelValidation : AbstractValidator<LoginViewModel>
+    public class LoginViewModelValidation : AbstractValidator<LoginViewModel>
     {
         private readonly IUserService _userService;
 
         public LoginViewModelValidation(IUserService userService)
         {
             _userService = userService;
+            CascadeMode = CascadeMode.Stop;
+
+            RuleFor(lm => lm.Username).NotEmpty().WithMessage("You have to enter username");
+            RuleFor(lm => lm.Username).MinimumLength(5).WithMessage("Username minimum lenght required is 5 characters.");
+            RuleFor(lm => lm.Username).Matches("^[a-zA-Z0-9_.-]*$").WithMessage("Username can only contain numbers, letters, underscore(_), dash(-) and point(.)");
+            RuleFor(lm => lm.Username).MaximumLength(25).WithMessage("Max lenght of username is 25");
+            RuleFor(lm => lm.Username).Must(username => _userService.GetByUsername(username) != null).WithMessage("The username does not exist"); // porazlicna od registerViewModel ako rabote moze da se smene i vo Register
+            
+
+            RuleFor(lm => lm.Password).NotEmpty().MinimumLength(6).WithMessage("Minimum lenght must be 6 characters");
+           
 
 
-            RuleFor(rm => rm.Username).NotEmpty().WithMessage("You have to enter username");
-            RuleFor(rm => rm.Username).Matches("^[a-zA-Z0-9_.-]*$").WithMessage("Username can only contain numbers, letters, underscore(_), dash(-) and point(.)");
-            RuleFor(rm => rm.Username).MaximumLength(25).WithMessage("Max lenght of username is 25");
-            RuleFor(rm => rm.Username).Must(username => _userService.GetByUsername(username) == null).WithMessage("The username does not exist"); // porazlicna od registerViewModel ako rabote moze da se smene i vo Register
-
-            RuleFor(rm => rm.Password).NotEmpty().MinimumLength(8).WithMessage("Minimum lenght must be 8 characters");
-            // dali trebe validacija za passwordot ako go promasis ?
 
         }
     }

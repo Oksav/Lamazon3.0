@@ -18,16 +18,19 @@ namespace Services
         private readonly IUserRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<OrderProduct> _orderProductRepository;
 
         public OrderService(IRepository<Order> orderRepo,
             IUserRepository<User> userRepo,
             IMapper mapper,
-            IRepository<Product> productRepository)
+            IRepository<Product> productRepository,
+            IRepository<OrderProduct> orderProductRepository)
         {
             _orderRepository = orderRepo;
             _userRepository = userRepo;
             _mapper = mapper;
             _productRepository = productRepository;
+            _orderProductRepository = orderProductRepository;
         }
 
         
@@ -49,7 +52,7 @@ namespace Services
         {
             try
             {
-                Order order = _orderRepository.GetAll().Where(x => x.UserId == userId && x.Status == StatusType.Init).FirstOrDefault();
+                Order order = _orderRepository.GetAll().Where(x => x.UserId == userId).LastOrDefault();
                 OrderViewModel orderViewModel = _mapper.Map<OrderViewModel>(order);
 
                 if(order.OrderProducts != null){
@@ -72,13 +75,13 @@ namespace Services
             
         }
 
-        public int AddProductToOrder(int productId, string userId) // koga dodaavis veke postoecki produkt vo order(so ist orderId i productId vage errror alreaady exist od database).
+        public int AddProductToOrder(int orderId, int productId, string userId) // koga dodaavis veke postoecki produkt vo order(so ist orderId i productId vage errror alreaady exist od database).
         {
 
             try
             {
                 Product product = _productRepository.GetById(productId);
-                Order order = _orderRepository.GetAll().Where(x => x.UserId == userId && x.Status == StatusType.Init).LastOrDefault();
+                Order order = _orderRepository.GetById(orderId);
                 User user = _userRepository.GetById(userId);
 
                 OrderProduct newOrderProduct = new OrderProduct { Order = order, Product = product };
@@ -137,17 +140,21 @@ namespace Services
         {
             try
             {
-                User user = _userRepository.GetById(userId);
+                
                 Order order = _orderRepository.GetById(orderId);
 
                 order.Status = (StatusType)status;
 
-                if(status == StatusTypeViewModel.Processing)
+                if(status == StatusTypeViewModel.Paid || status == StatusTypeViewModel.Delivered)  // && trebe  da gi smenis vo || ako sakis da ti funkcionire
                 {
+                    User user = _userRepository.GetById(userId);
+
                     _orderRepository.Insert(new Order()
                     {
                         User = user,
-                        Status = StatusType.Init
+                        Status = StatusType.Init,
+                        DateCreated = DateTime.UtcNow
+                        
                     });
                 }
                return _orderRepository.Update(order);
@@ -165,9 +172,22 @@ namespace Services
 
        
 
-        public void RemoveProductFromOrder(int orderId, int productId)
+        public bool RemoveProductFromOrder(int orderId, int productId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int removeOrderProduct = _orderProductRepository.Delete(int.Parse($"{orderId}{productId}"));
+                if (removeOrderProduct == 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch(Exception ex)
+            {
+                string message = $"Something went wrong with deleting your product! {ex.InnerException}";
+                throw new Exception(message, ex);
+                
+            }
         }
     }
 }

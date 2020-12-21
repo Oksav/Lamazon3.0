@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<OrderViewModel>
+﻿@model  OrderViewModel
 
 
 
@@ -9,27 +9,39 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Status</th>
+                            <th></th>
+                            <th>Product</th>
                             <th>Price</th>
-                            <th>Products</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var order in Model)
+                        @foreach (var product in Model.Products)
                         {
                             <tr>
-                                <td>@order.Status</td>
-                                <td>@order.Price</td>
-                                <td>
-                                    @foreach (var product in order.Products)
-                                    {
-                                        <span>@product.Name, </span>
-                                    }
-                                </td>
+                                <td><a asp-controller="Orders" title="Remove Product" asp-action="DeleteProduct" asp-route-productId=@product.ProductId><b>X</b></a></td>
+                                <td>@product.Name</td>
+                                <td>@product.Price $</td>
                             </tr>
                         }
+                        <tr>
+                            <td></td>
+                            <td><h4><b>Total Price:</b></h4></td>
+                            <td><h4><b>@Model.Price $</b></h4></td>
+
+                        </tr>
 
                     </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            @if (Model.Products.Count > 0)
+                            {
+                            <td><a asp-controller="Orders" asp-action="PayNow" asp-route-orderId="@Model.OrderId"><input type="button" class="btn btn-primary" value="Pay Now" /></a></td>
+                            }
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

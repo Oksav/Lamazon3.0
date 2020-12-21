@@ -31,10 +31,14 @@ namespace DataAccess.Repositories
 
         public int Update(Invoice entity)
         {
-            Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.InvoiceId == entity.InvoiceId);
-            if (invoice == null) return -1;
-
-            _dbContext.Invoices.Update(entity);
+           Invoice invoice = _dbContext.Invoices.FirstOrDefault(x => x.InvoiceId == entity.InvoiceId);
+           if (invoice == null) return -1;
+           else
+            {
+                invoice.Adress = entity.Adress;
+                invoice.PaymentMethod = entity.PaymentMethod;
+            }
+                      
 
             return _dbContext.SaveChanges();
         }
