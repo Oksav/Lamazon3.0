@@ -47,7 +47,6 @@ namespace Services
         }
 
 
-
         public OrderViewModel GetCurrentOrder(string userId) 
         {
             try
@@ -97,8 +96,6 @@ namespace Services
             }
 
         }
-
-
 
 
         public OrderViewModel GetOrderById(int id)  // koa ke imme lista od poveke ordere
@@ -156,6 +153,8 @@ namespace Services
                         DateCreated = DateTime.UtcNow
                         
                     });
+
+                    UpdateProductQuantity(order.OrderId);
                 }
                return _orderRepository.Update(order);
             }
@@ -167,10 +166,17 @@ namespace Services
         }
 
 
+        public void UpdateProductQuantity(int orderId)
+        {
+            Order order = _orderRepository.GetById(orderId);
+            foreach(var product in order.OrderProducts)
+            {
+                Product productForUpdate = _productRepository.GetById(product.ProductId);
+                productForUpdate.Quantity -= 1;
+                _productRepository.Update(productForUpdate);
+            }
+        }
 
-
-
-       
 
         public bool RemoveProductFromOrder(int orderId, int productId)
         {

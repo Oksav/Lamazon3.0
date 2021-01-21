@@ -102,8 +102,7 @@ namespace WebApplication.Controllers
 
             _invoiceService.UpdateModel(model);
             _orderService.ChangeStatus(model.OrderId, user.Id, StatusTypeViewModel.Paid);
-            return RedirectToAction("YourInvoice", "Invoice");
-            //error oti nema value za price
+            return RedirectToAction("YourInvoice", "Invoice", new { orderId = model.OrderId }); 
         }
     }
 }

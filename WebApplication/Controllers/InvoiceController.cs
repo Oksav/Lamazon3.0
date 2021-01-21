@@ -11,16 +11,25 @@ namespace WebApplication.Controllers
     public class InvoiceController : Controller
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly IOrderService _orderService;
 
-        public InvoiceController(IInvoiceService invoiceService)
+        public InvoiceController(IInvoiceService invoiceService, IOrderService orderService)
         {
             _invoiceService = invoiceService;
+            _orderService = orderService;
         }
 
+        
         public IActionResult YourInvoice(int orderId)
         {
-            InvoiceViewModel model = _invoiceService.GetInvoice(orderId);
-            return View(model);
+            string currentUser = User.Identity.Name;
+            OrderViewModel model = _orderService.GetOrderById(orderId);
+            if(model.User.Username != currentUser)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+                return View(model);
         }
     }
 }

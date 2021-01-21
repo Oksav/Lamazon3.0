@@ -11,6 +11,7 @@ namespace WebModels.ViewModels
         public int Id { get; set; }
         public PaymentTypeViewModel PaymentMethod { get; set; }
         public string Address { get; set; }
+        public DateTime IssueDate { get; set; }
         public double Price { get; set; }
         public int OrderId { get; set; }
         public OrderViewModel Order { get; set; }

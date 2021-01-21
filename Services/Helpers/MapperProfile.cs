@@ -20,8 +20,10 @@ namespace Services.Helpers
             CreateMap<LoginViewModel, User>();
 
             CreateMap<Product, ProductViewModel>()
+                .ForMember(pv => pv.PhotoPath, src => src.MapFrom(x => x.PhotoPath))
                 .ReverseMap()
-                .ForMember(p => p.OrderProducts, src => src.Ignore());
+                .ForMember(p => p.OrderProducts, src => src.Ignore())
+                .ForMember(p => p.PhotoPath, src => src.MapFrom(x => x.PhotoPath));
 
             CreateMap<Order, OrderViewModel>()
                 .ForMember(o => o.Status, src => src.MapFrom(x => x.Status))
@@ -36,10 +38,11 @@ namespace Services.Helpers
 
             CreateMap<Invoice, InvoiceViewModel>()
                 .ForMember(iv => iv.Address, src => src.MapFrom(i => i.Adress))
-                .ForMember(iv => iv.Id, src => src.ResolveUsing(i => i.InvoiceId))
+                .ForMember(iv => iv.Id, src => src.MapFrom(i => i.InvoiceId))
+                .ForMember(iv => iv.IssueDate, src => src.MapFrom(i => i.DateOfPay))
                 .ReverseMap()
-                .ForMember(i => i.Adress, src => src.ResolveUsing(iv => iv.Address))
-                .ForMember(i => i.DateOfPay, src => src.ResolveUsing(iv => DateTime.UtcNow))
+                .ForMember(i => i.Adress, src => src.MapFrom(iv => iv.Address))
+                .ForMember(i => i.DateOfPay, src => src.MapFrom(iv => DateTime.UtcNow))
                 .ForMember(i => i.Order, src => src.Ignore())
                 .ForMember(i => i.InvoiceId, src => src.MapFrom(iv => iv.Id));
             

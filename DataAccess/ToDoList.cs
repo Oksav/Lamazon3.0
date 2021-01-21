@@ -9,22 +9,25 @@ namespace DataAccess
 
         //check if authetincation and [authorize] attribute work  - checked if remains to hide the action if the userRole is not admin  ======= finished
         // ADD TO CART BUTTON HAVE TO MAKE IT WORK TO CHECK IF THE LIST WITH MY ORDERS WORKS. ===== finished
-        //THE MAPPER SETS DATETIME NOW ON EVERY ORDER SO WE NEED TO FIX THAT
+        //THE MAPPER SETS DATETIME NOW ON EVERY ORDER SO WE NEED TO FIX THAT  === finished
         // check if the cart is working correctly == works, but if you add existing product throws error
-        // partial view for implementing invoice
+        // implementing invoice == done
         // admin to check on the users with full info
         //update product ne e iskoristeno trebe da se implementire ====== finished
         //delete funkcijata a povikave na httpget samo ====== finished
         // quantity add it in the modify product table ==== finished
         // update interface to the list products. ==== finished
         // the user wants to delete an item from the basket === finished
-        //add picture to database and upload
-        // if someone buys items we have to lower the quantity in database or if it cancels the order we have to add in the quantity.
+        //add picture to database and upload ==== finished but picture is uploaded in the assembly.
+        // if someone buys items we have to lower the quantity in database or if it cancels the order we have to add in the quantity.(only if buys we lower) ===== finished
         // sum for the products in the basket == finished
-        //add quantity field in the product list
+        //add quantity field in the product list === finished
         // list all orders for admin and enter in eachone(you have to create a view that will be used for the user also).
         // validation if the user is correct but the password is wrong3 === finished
-        
+        // delete product from order for users === finished
+        // fix your front end of the store 
+        // fix your product list === finished
+
 
         // Orders part
 

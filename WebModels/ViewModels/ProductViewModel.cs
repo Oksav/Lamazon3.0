@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WebModels.Enums;
@@ -13,6 +14,7 @@ namespace WebModels.ViewModels
         public int Quantity { get; set; }
         public CategoryTypeViewModel Category { get; set; }
         public double Price { get; set; }
-        //should add quantity
+        public IFormFile Photo { get; set; }
+        public string PhotoPath { get; set; }
     }
 }
