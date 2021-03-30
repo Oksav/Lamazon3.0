@@ -24,11 +24,11 @@
                     <span class="thumbnail">
                         @if (product.PhotoPath != null)
                         {
-                            <img class="image" src="~/images/products/@product.PhotoPath" alt="@product.Name" asp-append-version="true">
+                            <img class="image" src="~/images/products/@product.PhotoPath" alt="@product.Name" asp-append-version="true" width="200" height="200">
                         }
                         else
                         {
-                            <img class="image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" alt="...">
+                            <img class="image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" alt="..." width="200" height="200">
                         } 
                         <h3>@product.Name</h3>
                         <h4>Category: @product.Category</h4>
@@ -56,111 +56,14 @@
     </div>
 
 
-    @*<div class="mt-3">
-        <div class="table-responsive">
-            <table class="table">
-
-                <tbody>
-                    @foreach (var product in Model)
-                    {
-                        <tr>
-                            <th></th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                        </tr>
-                        <tr>
-                            <td id="picture"> <img class="product-image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" /></td>
-                            <td id="id" style="display:none">@product.ProductId</td>
-                            <td id="name">@product.Name</td>
-                            <td id="category">@product.Category</td>
-                            <td id="description">@product.Description</td>
-                            <td id="price">@product.Price $</td>
-                            <td><a class="btn btn-primary" asp-controller="Orders" asp-action="AddToCart" asp-route-productId="@product.ProductId">Add to cart</a></td>
-                        </tr>
-                    }
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>*@
+    
 
 </div>
 
-@*<div class="products">
 
-    @foreach (var product in Model)
-    {
-    <div class="thumbnail">
-        <img class="product-image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" />
-
-        <h3>@product.ProductId</h3>
-        <h3>@product.Name</h3>
-        <h3>@product.Price $</h3>
-        <h3>Category: @product.Category</h3>
-        <h4>@product.Description</h4>
-        <a asp-controller="Orders" asp-action="AddToCart" asp-route-id=@product.ProductId><input type="button" class="btn btn-primary" value="Add to Cart" /></a>
-
-
-    </div>
-    }
-</div>*@
 
 <style>
 
-    /*.thumbnail {
-        display: flex;
-        flex-direction: column;
-        flex: 3;
-        align-items: center;
-    }
-
-    .caption {
-        display: flex;
-        flex-direction: column;
-        flex: 3;
-        text-align: center;
-    }
-
-    #picture {
-        margin: 30px;
-        display: flex;
-        flex: 4;
-    }
-
-    .product-image {
-        width: 300px;
-        height: 350px;
-    }
-
-    .ModificationButtons{
-        display:flex;
-        flex-direction: row;
-        margin: 10px;
-        flex-wrap: wrap;
-    }
-
-    .ModificationButtons a {
-        margin: 5px;
-    }
-
-
-    button {
-        display: flex;
-        margin: 2px;
-        padding: 10px;
-    }
-
-    .allProducts {
-        display: flex;
-    }
-
-    .info{
-        display:flex;
-        flex-direction:column;
-    }*/
 
     h4{
     	font-weight: 600;
@@ -193,12 +96,12 @@
 
     
 
-	@*@media screen and (max-width: 770px) {
+	@@media screen and (max-width: 770px) {
 		.right{
 			float:left;
 			width: 100%;
 		}
-	}*@
+	}
 
 
 </style>

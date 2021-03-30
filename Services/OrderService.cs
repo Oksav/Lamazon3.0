@@ -142,7 +142,7 @@ namespace Services
 
                 order.Status = (StatusType)status;
 
-                if(status == StatusTypeViewModel.Paid || status == StatusTypeViewModel.Delivered)  // && trebe  da gi smenis vo || ako sakis da ti funkcionire
+                if(status == StatusTypeViewModel.Paid || status == StatusTypeViewModel.Delivered) 
                 {
                     User user = _userRepository.GetById(userId);
 
@@ -166,8 +166,8 @@ namespace Services
         }
 
 
-        public void UpdateProductQuantity(int orderId)
-        {
+        public void UpdateProductQuantity(int orderId) // update rabote samo so 1, ako sakis da rabote so kolku quantity ke pisis trebe: da dodadis vo view-to quantity field ogranicen so kolicnta na proizvodot
+        {                                             // i taa kolicina da a dodadis kako parametar na vaa funkcija za da moze tolku da se odzeme vo databazata
             Order order = _orderRepository.GetById(orderId);
             foreach(var product in order.OrderProducts)
             {

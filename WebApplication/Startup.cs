@@ -38,10 +38,7 @@ namespace WebApplication
 
             services.AddAutoMapper(options => options.AddProfile<MapperProfile>());
 
-            DiModule.RegisterModule(
-                services,
-                Configuration.GetConnectionString("LamazonDbConnection")
-                );
+            DiModule.RegisterModule(services, Configuration.GetConnectionString("LamazonDbConnection"));
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -64,7 +61,7 @@ namespace WebApplication
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginViewModelValidation>());
 
         }
-            
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

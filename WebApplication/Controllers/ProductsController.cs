@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         }
 
 
-       
+
         public IActionResult ListProducts()
         {
             return View(_productService.GetAllProducts());
@@ -46,17 +46,17 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="admin")]
-        public IActionResult ModifyProduct() 
+        [Authorize(Roles = "admin")]
+        public IActionResult ModifyProduct()
         {
             IEnumerable<ProductViewModel> products = _productService.GetAllProducts();
-           // ViewBag.Products = products;
+            // ViewBag.Products = products;
             return View(products);
         }
 
 
         [Authorize(Roles = "admin")]
-        public IActionResult DeleteProduct(int id)   
+        public IActionResult DeleteProduct(int id)
         {
             _productService.RemoveProduct(id);
             return RedirectToAction("ModifyProduct", "Products");
@@ -72,18 +72,11 @@ namespace WebApplication.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public IActionResult UpdateProduct(ProductViewModel model) // vo update quantity ne se mene, go gube ID-to i zatoa ne prave update na productot
+        public IActionResult UpdateProduct(ProductViewModel model)
         {
             _productService.UpdateProduct(model);
             return RedirectToAction("ModifyProduct", "Products");
         }
-
-
-
-       
-
-
-
 
 
     }

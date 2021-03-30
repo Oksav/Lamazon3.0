@@ -44,7 +44,7 @@ namespace DataAccess.Repositories
             _dbContext.Users.Remove(user);
             return _dbContext.SaveChanges();
         }
-
+        
 
     }
 }

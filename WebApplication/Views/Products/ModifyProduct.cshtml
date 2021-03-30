@@ -13,6 +13,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>Product</th>
                             <th>Description</th>
                             <th>Category</th>
@@ -24,6 +25,17 @@
                         @foreach (var product in Model)
                         {
                         <tr>
+                            <td class="image">
+                                @if (product.PhotoPath != null)
+                                {
+                                    <img class="image" src="~/images/products/@product.PhotoPath" alt="@product.Name" asp-append-version="true" width="150" height="150" />
+                                }
+                                else
+                                {
+                                    <img class="image" src="https://img-a.udemycdn.com/course/750x422/147028_d030_9.jpg" alt="..." asp-append-version="true" width="150" height="150">
+                                }
+                                
+                            </td>
                             <td>@product.Name</td>
                             <td>@product.Description</td>
                             <td>@product.Category</td>

@@ -49,7 +49,7 @@ namespace Services.Validators
                 return false;
         }
 
-        private bool CheckIfEmailIsUnique(string email)
+        private bool CheckIfEmailIsUnique(string email) // gi povlecave site mailave od databaazta, moze da se dodade nova funkcija vo servisot i vo repositorto da vrake po mail samo
         {
             var emailExist = _userService.GetAllUsers().Select(e => e.Email).Where(e => e == email).SingleOrDefault();
 

@@ -18,11 +18,13 @@ namespace DataAccess
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
 
-
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            
 
             builder.Entity<OrderProduct>()
                 .HasKey(op => new { op.ProductId, op.OrderId });
